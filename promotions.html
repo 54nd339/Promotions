@@ -4172,7 +4172,7 @@ promotions to help you win big cash price." %}
 
     // leaderboard section
 
-    function waitForElementTopromo_date_span(element, promo, redirection) {
+    function waitForElementTopromo_date_span(element, promo, redirection, runCount) {
         if (document.getElementById(element) != null) {
             var localStorage_uid = localStorage.getItem("userId");
             if (localStorage_uid != null) {
@@ -4225,49 +4225,66 @@ promotions to help you win big cash price." %}
                     "<div><b>Please login !</b></div>";
             }
         } else {
+            if(runCount >= 5){
+                return;
+            }
             setTimeout(function () {
-                waitForElementTopromo_date_span(
-                    "div122",
-                    "PR_Leaderboard_Rapid_KnowYourRank-mob",
-                    "/promotions/junglee-rummy-hourly-leaderboards"
-                );
-                waitForElementTopromo_date_span(
-                    "div122-daily",
-                    "PR_Leaderboard_Daily_KnowYourRank-mob",
-                    "/promotions/junglee-rummy-daily-leaderboards"
-                );
-                waitForElementTopromo_date_span(
-                    "div122-weekly",
-                    "PR_Leaderboard_Weekly_KnowYourRank-mob",
-                    "/promotions/junglee-rummy-weekly-leaderboards"
-                );
-                waitForElementTopromo_date_span(
-                    "div122-monthly",
-                    "PR_Leaderboard_Monthly_KnowYourRank-mob",
-                    "/promotions/junglee-rummy-monthly-leaderboards"
-                );
+                if(element === "div122"){
+                    waitForElementTopromo_date_span(
+                        "div122",
+                        "PR_Leaderboard_Rapid_KnowYourRank-mob",
+                        "/promotions/junglee-rummy-hourly-leaderboards",
+                        ++runCount
+                    );
+                } else if(element === "div122-daily"){
+
+                    waitForElementTopromo_date_span(
+                        "div122-daily",
+                        "PR_Leaderboard_Daily_KnowYourRank-mob",
+                        "/promotions/junglee-rummy-daily-leaderboards",
+                        ++runCount
+                    );
+                } else if(element === "div122-weekly"){
+                    waitForElementTopromo_date_span(
+                        "div122-weekly",
+                        "PR_Leaderboard_Weekly_KnowYourRank-mob",
+                        "/promotions/junglee-rummy-weekly-leaderboards",
+                        ++runCount
+                    );
+                } else if(element === "div122-monthly"){
+                    waitForElementTopromo_date_span(
+                        "div122-monthly",
+                        "PR_Leaderboard_Monthly_KnowYourRank-mob",
+                        "/promotions/junglee-rummy-monthly-leaderboards",
+                        ++runCount
+                    );
+                }
             }, 1000);
         }
     }
     waitForElementTopromo_date_span(
         "div122",
         "PR_Leaderboard_Rapid_KnowYourRank-mob",
-        "/promotions/junglee-rummy-hourly-leaderboards"
+        "/promotions/junglee-rummy-hourly-leaderboards",
+        0
     );
     waitForElementTopromo_date_span(
         "div122-daily",
         "PR_Leaderboard_Daily_KnowYourRank-mob",
-        "/promotions/junglee-rummy-daily-leaderboards"
+        "/promotions/junglee-rummy-daily-leaderboards",
+        0
     );
     waitForElementTopromo_date_span(
         "div122-weekly",
         "PR_Leaderboard_Weekly_KnowYourRank-mob",
-        "/promotions/junglee-rummy-weekly-leaderboards"
+        "/promotions/junglee-rummy-weekly-leaderboards",
+        0
     );
     waitForElementTopromo_date_span(
         "div122-monthly",
         "PR_Leaderboard_Monthly_KnowYourRank-mob",
-        "/promotions/junglee-rummy-monthly-leaderboards"
+        "/promotions/junglee-rummy-monthly-leaderboards",
+        0
     );
 
     let msg = "Please choose number of game you want to play between 1 to 9999";
