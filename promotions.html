@@ -3185,7 +3185,13 @@ promotions to help you win big cash price." %}
     function dyredirect2() {
         let device = getDeviceType();
 
-        if (navigator.userAgent.indexOf("freeapp") > -1 || navigator.userAgent.indexOf('ipa/native/crosswalk') > -1 || device.indexOf("ipa") > -1 || device.indexOf("native") > -1 || (device.indexOf("mob") > -1 || isIosDevice()) || navigator.userAgent.indexOf("psrmg") > 1 == true) {
+        if (navigator.userAgent.indexOf("freeapp") > -1 ||
+            navigator.userAgent.indexOf('ipa/native/crosswalk') > -1 ||
+            device.indexOf("ipa") > -1 ||
+            device.indexOf("native") > -1 ||
+            (device.indexOf("mob") > -1 ||
+            isIosDevice()) ||
+            navigator.userAgent.indexOf("psrmg") > 1) {
             window.top.location.href = "https://m.jungleerummy.com/rummy-tournaments/megamillionaire2023";
         } else {
             window.top.location.href = "https://m.jungleerummy.com/upgradenative2023";
@@ -3660,6 +3666,21 @@ promotions to help you win big cash price." %}
 // sliderJS ends
 </script>
 <script>
+    // popup functions 
+    function closePopupTgwp() {
+        // Pause the video
+        let iframe_tgwp = document.querySelector('.youtube_tgwp');
+        iframe_tgwp.src = '';
+
+        // Close the popup
+        let popupTgwp1 = document.getElementById("popup");
+        popupTgwp1.classList.add("hidden-class-tgwp");
+
+        setTimeout(() => {
+            iframe_tgwp.src = 'https://www.youtube.com/embed/3-T_VoqHydo';
+        }, 200);
+    }
+
     var userTypedef = localStorage.getItem("userType");
     window.addEventListener("DOMContentLoaded", (event) => {
         var today = new Date();
@@ -3705,19 +3726,11 @@ promotions to help you win big cash price." %}
         ) {
             Print.postMessage("go_to_lobby");
         }
-        if (param == "/promotions/free-tournaments") {
-            window.location.href = param;
-        }
-        if (param == "/rummy-tournaments/festive2023") {
-            window.location.href = param;
-        }
-        if (param == "/promotions/cash-tournaments") {
-            window.location.href = param;
-        }
-        if (param == "/rummy-tournaments/loyaltytournaments") {
-            window.location.href = param;
-        }
-        if (param == "/rummy-tournaments/rpl12") {
+        if (param == "/promotions/free-tournaments" ||
+            param == "/rummy-tournaments/festive2023" ||
+            param == "/promotions/cash-tournaments" ||
+            param == "/rummy-tournaments/loyaltytournaments" ||
+            param == "/rummy-tournaments/rpl12") {
             window.location.href = param;
         }
     }
@@ -3725,19 +3738,20 @@ promotions to help you win big cash price." %}
     /* for native and non-native */
     function fornonnative() {
         var device = getDeviceType();
-        if (navigator.userAgent.indexOf("freeapp") > -1 || navigator.userAgent.indexOf('ipa/native/crosswalk') > -1 || device.indexOf("ipa") > -1 || device.indexOf("native") > -1 || (device.indexOf("mob") > -1 || isIosDevice())) {
+        if (navigator.userAgent.indexOf("freeapp") > -1 ||
+            navigator.userAgent.indexOf('ipa/native/crosswalk') > -1 ||
+            device.indexOf("ipa") > -1 || device.indexOf("native") > -1 ||
+            (device.indexOf("mob") > -1 || isIosDevice())) {
             document.querySelectorAll(".non-native1").forEach((el) => {
                 el.style.display = "None"
             })
             document.querySelectorAll(".native1").forEach((el) => {
                 el.style.display = "block";
             });
-
         } else {
             document.querySelectorAll(".non-native1").forEach((el) => {
                 el.style.display = "block";
             })
-
             document.querySelectorAll(".native1").forEach((el) => {
                 el.style.display = "None";
             });
@@ -3745,8 +3759,50 @@ promotions to help you win big cash price." %}
     }
 
     fornonnative()
-    //promotions API implementation
 
+    // timer section
+    function timerCountdown(id, time) {
+        console.log("timer countdown called!!!");
+        // Set the date we're counting down to
+        let countDownDate = new Date(time).getTime();
+
+        // Update the count down every 1 second
+        let x = setInterval(function () {
+            // Get todays date and time
+            let now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            let distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            let hours = Math.floor(distance / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (hours < 10) hours = "0" + hours;
+            if (minutes < 10) minutes = "0" + minutes;
+            if (seconds < 10) seconds = "0" + seconds;
+
+            // Display the result in the element with id="demo"
+            //   document.querySelector(`.${id}`).innerHTML = hours + " : "
+            //   + minutes + " : " + seconds + "";
+
+            if (id.indexOf('|') > -1) {
+                let idArray = id.split('|');
+                id = idArray[0];
+            }
+
+            $("." + id).html(hours + " h: " + minutes + " m: " + seconds + "s");
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector(`.${id}`).innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    }
+
+    //promotions API implementation
     function promotionsConfig() {
         let user_logged_in = false;
 
@@ -3788,7 +3844,6 @@ promotions to help you win big cash price." %}
                 var indexNumber = 1;
 
                 responseArray.forEach((elem) => {
-
                     if (elem.bonus_code.indexOf('|') > -1) {
                         let idArray = elem.bonus_code.split(' ');
                         copycodeBonusCode = idArray[0];
@@ -4034,7 +4089,7 @@ promotions to help you win big cash price." %}
     // main.js starts
 
     var rangeSliderCurrentValue;
-    function tabingCustome() {
+    // function tabingCustome() {
         let allTab = document.querySelectorAll("[data-tab-outer='tabbing']");
         allTab.forEach((elem) => {
             let parentID = elem.getAttribute("id");
@@ -4094,10 +4149,10 @@ promotions to help you win big cash price." %}
                 });
             });
         });
-    }
+    // }
 
     // accordion
-    var accordion_custom = () => {
+    // var accordion_custom = () => {
         let all_content = document.querySelectorAll(
             ".accordion_outer .accordion_hdr"
         );
@@ -4119,11 +4174,11 @@ promotions to help you win big cash price." %}
                 false
             );
         });
-    };
+    // };
     // end accordion
 
-    tabingCustome();
-    accordion_custom();
+    // tabingCustome();
+    // accordion_custom();
 
     $(document).ready(function () {
         $(".ongoing_tournaments").owlCarousel({
@@ -4171,7 +4226,6 @@ promotions to help you win big cash price." %}
     });
 
     // leaderboard section
-
     function waitForElementTopromo_date_span(element, promo, redirection, runCount = 0) {
         if (document.getElementById(element) != null) {
             var localStorage_uid = localStorage.getItem("userId");
@@ -4263,6 +4317,11 @@ promotions to help you win big cash price." %}
             priority: "now",
         });
         window.location.href = rdn;
+    }
+
+    function isPwa() {
+        return (sessionStorage.getItem('launchFrom') == 'PWA' || window.matchMedia('(display-mode: standalone)').matches ||
+        (window.matchMedia('(display-mode: browser)').matches == false) && (navigator.userAgent.indexOf("crosswalk") == -1))
     }
 
     function getDeviceType() {
@@ -4477,7 +4536,6 @@ promotions to help you win big cash price." %}
     }
 
     // hourly tab
-
     function gup(name, url) {
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -4487,7 +4545,6 @@ promotions to help you win big cash price." %}
         return results == null ? null : results[1];
     }
     var global_user_flag = 0;
-
     function GET_UID() {
         var get_param_uid = gup("refid", window.location);
         var localStorage_uid = localStorage.getItem("userId");
@@ -4535,7 +4592,6 @@ promotions to help you win big cash price." %}
     }, 2000);
 
     // tournaments section
-
     $(document).ready(function () {
         $(".completed_tournaments").owlCarousel({
             loop: true,
@@ -4553,7 +4609,6 @@ promotions to help you win big cash price." %}
             ],
         });
     });
-
     $(document).ready(function () {
         $(".completed_tournaments1").owlCarousel({
             loop: true,
@@ -4568,48 +4623,6 @@ promotions to help you win big cash price." %}
         });
     });
 
-    // timer section
-
-    function timerCountdown(id, time) {
-        console.log("timer countdown called!!!");
-        // Set the date we're counting down to
-        let countDownDate = new Date(time).getTime();
-
-        // Update the count down every 1 second
-        let x = setInterval(function () {
-            // Get todays date and time
-            let now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            let distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            let hours = Math.floor(distance / (1000 * 60 * 60));
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            if (hours < 10) hours = "0" + hours;
-            if (minutes < 10) minutes = "0" + minutes;
-            if (seconds < 10) seconds = "0" + seconds;
-
-            // Display the result in the element with id="demo"
-            //   document.querySelector(`.${id}`).innerHTML = hours + " : "
-            //   + minutes + " : " + seconds + "";
-
-            if (id.indexOf('|') > -1) {
-                let idArray = id.split('|');
-                id = idArray[0];
-            }
-
-            $("." + id).html(hours + " h: " + minutes + " m: " + seconds + "s");
-
-            // If the count down is finished, write some text
-            if (distance < 0) {
-                clearInterval(x);
-                document.querySelector(`.${id}`).innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    }
 </script>
 
 <script>
@@ -4624,17 +4637,8 @@ promotions to help you win big cash price." %}
     promoArr.forEach((elem, i) => {
         promoArr[i] = keyWordPrefix + "-" + elem + "-" + deviceString;
     });
+
     var user1234 = localStorage.getItem("userId");
-
-    async function checkIfAllOpted() {
-        let promoValidArr = await isOptInSlider(user1234, promoArr).then(
-            value => value.data
-        );
-        // checkTrue(promoValidArr)
-    }
-    
-    checkIfAllOpted();
-
     async function isOptInSlider(UserID, array = []) {
         let isStatus = false;
 
@@ -4657,137 +4661,20 @@ promotions to help you win big cash price." %}
                 return res;
             });
     }
+    let promoValidArr = await isOptInSlider(user1234, promoArr).then(
+        value => value.data
+    );
 </script>
 <script>
     function updateSliderELement(trackElem, value) {
         let trackerELement = document.getElementById(trackElem);
         trackerELement.style.width = `${value}%`;
     }
-
-    function getRangeSliderHtml(index) {
-        let rangeSliderId = "rangeSlider" + index;
-        let trackElemId = "trackInner" + index;
-        return `<div class="slider-wrap" id="${rangeSliderId}">
-                          <input type="range" class="range" min="0" max="100" value="0" disabled>
-                          <div class="track">
-                            <div class="track-inner" id="${trackElemId}"></div>
-                          </div>
-                        </div>`;
-    }
-
-    function createRangeSliders(num) {
-        let rangeSliderHtml = ``;
-        rangeSliderHtml += getStartHtmlOfGwPopup();
-        for (let i = 0; i < num; i++) {
-            rangeSliderHtml += getRangeSliderHtml(i);
-        }
-        rangeSliderHtml += ` </div>`;
-        return rangeSliderHtml;
-    }
-
-    function openRangePopUp() {
-        let gwPopupHtml = createRangeSliders(7);
-        gwPopupHtml += getStartOfGWPopupCarousel();
-        gwPopupHtml += ` </div>`;
-
-        document.getElementById("greatWinningPopup").innerHTML = gwPopupHtml;
-        setTimeout(() => {
-            startSliderInterval("trackInner0", 0);
-            handleGWcarouselInit();
-        }, 100);
-    }
-
-    function closeWinningPopUp() {
-        GAtrack3_calculate("STORIES-BUTTON-CLOSE");
-        $(".popup-gw-slider").owlCarousel("destroy");
-        closeAllInterVal();
-        document.getElementById("greatWinningPopup").innerHTML = "";
-    }
-
-    function handleGWcarouselInit() {
-        $(".popup-gw-slider").owlCarousel({
-            loop: false,
-            margin: 10,
-            nav: true,
-            dots: false,
-            autoplay: true,
-            autoplayTimeout: 7000,
-            responsive: {
-                0: {
-                    items: 1,
-                },
-            },
-            navText: [
-                "<div class='greatWinningPopup-owl-prev' onclick='handlePrevGWCarouselGA()'></div>",
-                "<div class='greatWinningPopup-owl-next' onclick='handleNextGWCarouselGA()'></div>",
-            ],
-        });
-        $(".popup-gw-slider").on("changed.owl.carousel", function (e) {
-            let idx = e.item.index;
-            let total = e.item.count;
-            let trackerELementId = "trackInner" + idx;
-            console.log("events", e.item, "trakElem: ", trackerELementId);
-            startSliderInterval(trackerELementId, idx);
-            fillPreviousSlider(idx, total);
-
-            let label = "STORIES-CARDN_" + idx;
-            GAtrack3_calculate(label);
-        });
-    }
-
     function handlePrevGWCarouselGA() {
         GAtrack3_calculate("STORIES-BUTTON-BACK");
     }
-
     function handleNextGWCarouselGA() {
         GAtrack3_calculate("STORIES-BUTTON-NEXT");
-    }
-
-    function fillPreviousSlider(idx, total) {
-        console.log("you have to fill idx: ", idx);
-
-        for (let i = 0; i < total; i++) {
-            let trackerELementId = "trackInner" + i;
-            if (i !== idx) {
-                switch (i) {
-                    case 0:
-                        stopSlider(sliderInterval0);
-                        break;
-                    case 1:
-                        stopSlider(sliderInterval1);
-                        break;
-                    case 2:
-                        stopSlider(sliderInterval2);
-                        break;
-                    case 3:
-                        stopSlider(sliderInterval3);
-                        break;
-                    case 4:
-                        stopSlider(sliderInterval4);
-                        break;
-                    case 5:
-                        stopSlider(sliderInterval5);
-                        break;
-                    case 6:
-                        stopSlider(sliderInterval6);
-                        break;
-                }
-                updateSliderELement(trackerELementId, 0);
-            }
-            if (i < idx) {
-                updateSliderELement(trackerELementId, 100);
-            }
-        }
-    }
-
-    function closeAllInterVal() {
-        stopSlider(sliderInterval0);
-        stopSlider(sliderInterval1);
-        stopSlider(sliderInterval2);
-        stopSlider(sliderInterval3);
-        stopSlider(sliderInterval4);
-        stopSlider(sliderInterval5);
-        stopSlider(sliderInterval6);
     }
 
     /*****
@@ -4883,36 +4770,117 @@ promotions to help you win big cash price." %}
                 break;
         }
     }
+    function fillPreviousSlider(idx, total) {
+        console.log("you have to fill idx: ", idx);
 
-    function stopSlider(intervalName) {
-        clearInterval(intervalName);
+        for (let i = 0; i < total; i++) {
+            let trackerELementId = "trackInner" + i;
+            if (i !== idx) {
+                switch (i) {
+                    case 0:
+                        clearInterval(sliderInterval0);
+                        break;
+                    case 1:
+                        clearInterval(sliderInterval1);
+                        break;
+                    case 2:
+                        clearInterval(sliderInterval2);
+                        break;
+                    case 3:
+                        clearInterval(sliderInterval3);
+                        break;
+                    case 4:
+                        clearInterval(sliderInterval4);
+                        break;
+                    case 5:
+                        clearInterval(sliderInterval5);
+                        break;
+                    case 6:
+                        clearInterval(sliderInterval6);
+                        break;
+                }
+                updateSliderELement(trackerELementId, 0);
+            }
+            if (i < idx) {
+                updateSliderELement(trackerELementId, 100);
+            }
+        }
     }
-
-    function getStartHtmlOfGwPopup() {
-        return `<div class="great-winning-popup">
-                      <div class="close-icon-holder"> <a class="close-icon" onClick="closeWinningPopUp()"> </a> </div>
-                      <div class="great-winning-popup-stories-slider">`;
-    }
-
-    function getStartOfGWPopupCarousel() {
-        let carouselHtml = ``;
-        carouselHtml += ` <div class="owl-carousel owl-theme popup-gw-slider">`;
-        GW_POPUP_DATA.forEach((item) => {
-            let carouselItemHtml = `<div class="item">
-                          <div class="gw-carousel-img-holder">
-                              <a href="javascript:void(0)" ><img
-                                      src="${item.img}"
-                                      alt="current-promotions" border="0" /></a>
-                          </div>
-                      </div>`;
-            carouselHtml += carouselItemHtml;
+    function handleGWcarouselInit() {
+        $(".popup-gw-slider").owlCarousel({
+            loop: false,
+            margin: 10,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 7000,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+            },
+            navText: [
+                "<div class='greatWinningPopup-owl-prev' onclick='handlePrevGWCarouselGA()'></div>",
+                "<div class='greatWinningPopup-owl-next' onclick='handleNextGWCarouselGA()'></div>",
+            ],
         });
-        carouselHtml += `</div>`;
-        return carouselHtml;
+        $(".popup-gw-slider").on("changed.owl.carousel", function (e) {
+            let idx = e.item.index;
+            let total = e.item.count;
+            let trackerELementId = "trackInner" + idx;
+            console.log("events", e.item, "trakElem: ", trackerELementId);
+            startSliderInterval(trackerELementId, idx);
+            fillPreviousSlider(idx, total);
+
+            let label = "STORIES-CARDN_" + idx;
+            GAtrack3_calculate(label);
+        });
+    }
+
+    function initiateCarousel() {
+        $("#header_slider").owlCarousel("destroy");
+
+        $("#header_slider").owlCarousel({
+            items: 1,
+            margin: 5,
+            autoHeight: true,
+            nav: false,
+            loop: true,
+            autoplay: true
+        });
+    }
+    initiateCarousel();
+    
+    function isUserBelongToRestrictedState() {
+        let userData = JSON.parse(localStorage.getItem("userData"));
+        if (
+            userData.smUserInfo.details != null &&
+            userData.smUserInfo.details.state != null
+        ) {
+            let state = userData.smUserInfo.details.state;
+            let restrictedState;
+            if (userData.statesNotAllowed != null) {
+                restrictedState = userData.statesNotAllowed;
+            } else {
+                restrictedState = [
+                    "Assam",
+                    "Orissa",
+                    "Telangana",
+                    "Nagaland",
+                    "Sikkim",
+                    "Tamil Nadu",
+                    "Andhra Pradesh",
+                    "Meghalaya",
+                    "Restricted State",
+                ];
+            }
+
+            return restrictedState.indexOf(state) >= 0;
+        }
+        return false;
     }
 
     // for dynamic user-specific banner -> cashback Bazar
-
     function withdrawlDeduction() {
         let newItem = document.createElement("div");
         var mainParentDiv = document.getElementById("header_slider");
@@ -4950,19 +4918,22 @@ promotions to help you win big cash price." %}
                     if (res.status == true) {
                         mainParentDiv.appendChild(newItem);
                     }
-                    initiateCarousel();
                 });
         }
-        else {
-            initiateCarousel();
-        }
-
     }
 
-    initiateCarousel();
+    function vipwiseprize() {
+        var prize = document.querySelectorAll('.prize-amt-value')
+        var local1 = JSON.parse(localStorage.getItem("userData"));
+        var VIP = local1.smUserInfo.vip;
+        if (VIP == 1 || VIP == 2 || VIP == 3 || VIP == 4 || VIP == 5 || VIP == 6 || VIP == 0) {
+            prize.forEach((el) => {
+                el.innerHTML = `₹75,000`
+            })
+        }
+    }
 
     // for dynamic user-specific banner -> Rummy Goals
-
     function bigbonusbashbanners() {
         let newItem = document.createElement("div");
         newItem.classList.add("item");
@@ -4974,7 +4945,6 @@ promotions to help you win big cash price." %}
             let vip_category1 = local2.smUserInfo.vip;
             let headerSlider = document.getElementById("header_slider");
 
-
             if (vip_category1 == 2 || vip_category1 == 4) {
 
                 let url = `https://stack.jungleegames.com/vault/big-bonus-bash-user?userId=${userId}`;
@@ -4983,7 +4953,7 @@ promotions to help you win big cash price." %}
                 })
                     .then((res) => res.json())
                     .then((res) => {
-                        if (res.status == true) {
+                        if (res.status) {
                             newItem.innerHTML = `
             <a href="javascript:void(0)"
               onclick="GAtrack3('', '/promotions/big-bonus-bash-1')"><img
@@ -4991,8 +4961,6 @@ promotions to help you win big cash price." %}
           <div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div>
           `;
                             headerSlider.appendChild(newItem);
-                            initiateCarousel();
-
                         } else {
                             return false;
                         }
@@ -5001,102 +4969,8 @@ promotions to help you win big cash price." %}
                         console.log(err);
                     });
             }
-        } else {
-            initiateCarousel();
         }
 
-    }
-
-    function vipwiseprize() {
-        var prize = document.querySelectorAll('.prize-amt-value')
-        var local1 = JSON.parse(localStorage.getItem("userData"));
-        var VIP = local1.smUserInfo.vip;
-        if (VIP == 1 || VIP == 2) {
-            prize.forEach((el) => {
-
-                el.innerHTML = `₹75,000`
-            })
-
-        } if (VIP == 3 || VIP == 4) {
-            prize.forEach((el) => {
-                el.innerHTML = `₹75,000`
-            })
-
-        } if (VIP == 5 || VIP == 6 || VIP == 0) {
-            prize.forEach((el) => {
-                el.innerHTML = `₹75,000`
-            })
-        }
-    }
-
-    // for dynamic user-specific banner -> Rummy legends
-    function tigerCheetahRummyLegends() {
-        let newItem = document.createElement("div");
-        newItem.classList.add("item");
-
-        newItem.innerHTML = `
-    <a href="javascript:void(0)"
-      onclick="GAtrack3('PR_Banner_rummy-legends-leaderboard', '/rummy-legends-leaderboard')"><img
-        src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_february_23/zenrik_images/360x142-(10)-16766408972211.jpg?v=1676640897"
-        style="width: 100%" alt=""></a><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div>`;
-
-        if (localStorage.getItem("userId") !== null) {
-            let userID_G = localStorage.getItem("userId");
-
-            var url = `https://stack.jungleegames.com/vault/tiger-cheetah-user?userId=${userID_G}&device=web`;
-
-            fetch(url, {
-                method: "POST",
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    let headerSlider = document.getElementById("header_slider");
-                    if (res.status) {
-                        headerSlider.appendChild(newItem);
-                        initiateCarousel();
-                        console.log('legends banner visible');
-                    } else {
-                        initiateCarousel();
-                        console.log('legends banner Not visible')
-                    }
-                });
-        } else {
-            initiateCarousel();
-        }
-    }
-
-    function highroller() {
-        let newItem = document.createElement("div");
-        newItem.classList.add("item");
-
-        newItem.innerHTML = `
-    <a href="javascript:void(0)"
-      onclick="GAtrack3('', '/promotions/big-bonus-bonanza')"><img
-        src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/w-a-360x142-16934617776469.jpg?v=1693461778"
-        style="width: 100%" alt=""></a>
-        <div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
-
-        if (localStorage.getItem("userId") !== null) {
-            let userID_G = localStorage.getItem("userId");
-
-            var url = `https://stack.jungleegames.com/vault/high-roller-big-bonanza-user?UID=${userID_G}`;
-
-            fetch(url, {
-                method: "GET",
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    let headerSlider = document.getElementById("header_slider");
-                    if (res.status) {
-                        headerSlider.appendChild(newItem);
-                        initiateCarousel();
-                    } else {
-                        initiateCarousel();
-                    }
-                });
-        } else {
-            initiateCarousel();
-        }
     }
 
     function checkUserCodeStatus() {
@@ -5128,7 +5002,6 @@ promotions to help you win big cash price." %}
                                     responsibly.</div> `;
                                     let headerSlider = document.getElementById("header_slider");
                                     headerSlider.appendChild(newItem);
-                                    initiateCarousel();
     
                         } else if ((res.data.type == 'queen')) {
                           
@@ -5144,7 +5017,6 @@ promotions to help you win big cash price." %}
     
                                     let headerSlider = document.getElementById("header_slider");
                                     headerSlider.appendChild(newItem);
-                                    initiateCarousel();
                         } else {
                             newItem.innerHTML = `
                             <div class="item"> </div>`;
@@ -5156,17 +5028,63 @@ promotions to help you win big cash price." %}
         }
     }
 
-    function initiateCarousel() {
-        $("#header_slider").owlCarousel("destroy");
+    // for dynamic user-specific banner -> Rummy legends
+    function tigerCheetahRummyLegends() {
+        let newItem = document.createElement("div");
+        newItem.classList.add("item");
 
-        $("#header_slider").owlCarousel({
-            items: 1,
-            margin: 5,
-            autoHeight: true,
-            nav: false,
-            loop: true,
-            autoplay: true
-        });
+        newItem.innerHTML = `
+    <a href="javascript:void(0)"
+      onclick="GAtrack3('PR_Banner_rummy-legends-leaderboard', '/rummy-legends-leaderboard')"><img
+        src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_february_23/zenrik_images/360x142-(10)-16766408972211.jpg?v=1676640897"
+        style="width: 100%" alt=""></a><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div>`;
+
+        if (localStorage.getItem("userId") !== null) {
+            let userID_G = localStorage.getItem("userId");
+
+            var url = `https://stack.jungleegames.com/vault/tiger-cheetah-user?userId=${userID_G}&device=web`;
+
+            fetch(url, {
+                method: "POST",
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    let headerSlider = document.getElementById("header_slider");
+                    if (res.status) {
+                        headerSlider.appendChild(newItem);
+                        console.log('legends banner visible');
+                    } else {
+                        console.log('legends banner Not visible')
+                    }
+                });
+        }
+    }
+
+    function highroller() {
+        let newItem = document.createElement("div");
+        newItem.classList.add("item");
+
+        newItem.innerHTML = `
+    <a href="javascript:void(0)"
+      onclick="GAtrack3('', '/promotions/big-bonus-bonanza')"><img
+        src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/w-a-360x142-16934617776469.jpg?v=1693461778"
+        style="width: 100%" alt=""></a>
+        <div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
+
+        if (localStorage.getItem("userId") !== null) {
+            let userID_G = localStorage.getItem("userId");
+
+            var url = `https://stack.jungleegames.com/vault/high-roller-big-bonanza-user?UID=${userID_G}`;
+
+            fetch(url, {
+                method: "GET",
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    let headerSlider = document.getElementById("header_slider");
+                    if (res.status) headerSlider.appendChild(newItem);
+                });
+        }
     }
 
     function isRummyProPassIsActive() {
@@ -5196,47 +5114,35 @@ promotions to help you win big cash price." %}
         );
         return (today >= subscriptionStartDate && today < subscriptionActiveDays)
     }
-
-    function isUserBelongToRestrictedState() {
-        let userData = JSON.parse(localStorage.getItem("userData"));
-        if (
-            userData.smUserInfo.details != null &&
-            userData.smUserInfo.details.state != null
-        ) {
-            let state = userData.smUserInfo.details.state;
-            let restrictedState;
-            if (userData.statesNotAllowed != null) {
-                restrictedState = userData.statesNotAllowed;
-            } else {
-                restrictedState = [
-                    "Assam",
-                    "Orissa",
-                    "Telangana",
-                    "Nagaland",
-                    "Sikkim",
-                    "Tamil Nadu",
-                    "Andhra Pradesh",
-                    "Meghalaya",
-                    "Restricted State",
-                ];
-            }
-
-            return restrictedState.indexOf(state) >= 0;
-        }
-        return false;
-    }
-
     function rppIplApiCall(rppUserId, rppUserVip) {
         let url = `https://stack.jungleegames.com/vault/jungleerummy/pro/pass/subscription/ipl/is-el-sub?userID=${rppUserId}&vip=${rppUserVip}`;
         return fetch(url, {
             method: "GET",
         })
             .then((res) => res.json())
-            .then((res) => {
-                return res;
-            });
+            .then((res) => res);
     }
-
+    function getProPassIPLBannerForVip(userVip, isElorReSub) {
+        let vip = parseInt(userVip);
+        if (isElorReSub == 0) {
+            if (vip == 0 || vip == 3) {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_30_ipl-16801752901053.jpg?v=1680175290';
+            } else {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_50_ipl-16801752909159.jpg?v=1680175291';
+            }
+        } else {
+            if (vip == 0) {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip030-16832679604535.jpg?v=1683267961';
+            } if (vip == 4 || vip == 5 || vip == 6) {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip50100-16832679613232.jpg?v=1683267962';
+            } if (vip == 1 || vip == 2) {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip1RppResub-16849341848797.jpg?v=1684934185';
+            } if (vip == 3) {
+                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip23RppResub-16849341841369.jpg?v=1684934184';
+            }
+            return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_30_ipl-16801752901053.jpg?v=1680175290';
+        }
+    }
     async function rummyProPassIPL() {
         if (isRummyProPassIsActive() && localStorage.getItem("userId") !== null) {
             if (isUserBelongToRestrictedState()) return;
@@ -5278,50 +5184,61 @@ promotions to help you win big cash price." %}
                   style="width: 100%" alt=""></a> </div> <div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div>`;
                 let headerSlider = document.getElementById("header_slider");
                 headerSlider.insertBefore(newItem, headerSlider.children[0]);
-                setTimeout(() => {
-                    initiateCarousel();
-                }, 200);
-
-            } else {
-                initiateCarousel();
             }
-        } else {
-            initiateCarousel();
         }
     }
-    function isVbpIsActive() {
-        let subscriptionStartDateInStr = new Date("2023-05-17").toLocaleString(
-            "en-US",
-            { timeZone: "Asia/Kolkata" }
-        );
-        let subscriptionStartDate = new Date(subscriptionStartDateInStr);
-        subscriptionStartDate.setHours(0, 0, 0, 0);
 
-        let subscriptionActiveDays = new Date();
-        subscriptionActiveDays.setDate(subscriptionStartDate.getDate() + 7);
-        subscriptionActiveDays.setHours(0, 0, 0, 0);
-
-        let todayInStr = new Date().toLocaleString("en-US", {
-            timeZone: "Asia/Kolkata",
-        });
-        let today = new Date(todayInStr);
-        today.setHours(0, 0, 0, 0);
-        console.log(
-            "dates rae: ",
-            subscriptionStartDate,
-            "active: ",
-            subscriptionActiveDays,
-            "lol: ",
-            today >= subscriptionStartDate
-        );
-        return (today >= subscriptionStartDate && today < subscriptionActiveDays)
+    function TdsStrip() {
+        let url = "https://stack.jungleegames.com/vault/tds-promotion-strip";
+        fetch(url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userid: localStorage.getItem("userId") }),
+        }).then(res => res.json()).then((res) => {
+            if (res?.data) {
+                let stripBelowSliderElem = document.getElementById("stripBelowSliderElem");
+                stripBelowSliderElem.style.display = "block";
+                stripBelowSliderElem.innerHTML = `<img onclick="GAtrack3('NewUserTDS_PromoStripClicked', '/deductioncashback')" style="width:100%;margin-bottom: 5px;" src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/TDSNew_Strip-16911423515149.png?v=1691142352" />`;
+            }
+        })
     }
 
+    function tppApiCall(vbpUserId, vbpUserVip) {
+        let url = `https://stack.jungleegames.com/vault/tpp/is-el-sub?userID=${vbpUserId}&vip=${vbpUserVip}`;
+        return fetch(url, {
+            method: "GET",
+        })
+            .then((res) => res.json())
+            .then((res) => res);
+    }
+
+    function getTPPStripNbnr(status) {
+        if (status == 'SUBSCRIBED') {
+            return {
+                bnr: "https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/TPP_S_Promo-16884645389803.jpg?v=1688464539",
+                stripHtml: `<a href="javascript:void(0)"
+                            onclick="GAtrack3('VBP_Strip_Clicked', '/subscription/tournamentpropass')"
+                            >
+                            <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/tppsrtrip-16884645518065.png?v=1688464552" style="width: 100%; height: auto;"/>
+                         </a>`
+            }
+        }
+        return {
+            bnr: "https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/TPP_NS_Promo-16884645397599.jpg?v=1688464540",
+            stripHtml: `<a href="javascript:void(0)"
+                        onclick="GAtrack3('VBP_Strip_Clicked', '/subscription/tournamentpropass')"
+                        >
+                        <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/tppsrtrip-16884645518065.png?v=1688464552" style="width: 100%; height: auto;"/>
+                        </a>`
+        }
+    }
     async function tppPassBannerAndStrip() {
         if (localStorage.getItem("userId") !== null) {
-            if (isUserBelongToRestrictedState()) {
-                return;
-            }
+            if (isUserBelongToRestrictedState()) return;
+            
             let userID_G = localStorage.getItem("userId");
             const rem = userID_G % 4;
 
@@ -5330,9 +5247,8 @@ promotions to help you win big cash price." %}
 
             let UserInfo = JSON.parse(localStorage.getItem("userData"));
             let userVIPvalue = UserInfo.smUserInfo.vip;
-            if (userVIPvalue != 0) {
-                return;
-            }
+            if (userVIPvalue != 0) return;
+            
             let tppApiResponse;
             let curr = new Date();
             let tppStoredData = {
@@ -5359,146 +5275,45 @@ promotions to help you win big cash price." %}
                 document.getElementById("stripBelowSliderElem").style.display = "block";
                 document.getElementById('stripBelowSliderElem').innerHTML = getTPPStripNbnr(tppApiResponse.subscription).stripHtml;
             }
-        } else {
-            initiateCarousel();
         }
     }
 
-    function tppApiCall(vbpUserId, vbpUserVip) {
-        let url = `https://stack.jungleegames.com/vault/tpp/is-el-sub?userID=${vbpUserId}&vip=${vbpUserVip}`;
-        return fetch(url, {
-            method: "GET",
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                return res;
-            });
-    }
-
-    function getProPassIPLBannerForVip(userVip, isElorReSub) {
-        let vip = parseInt(userVip);
-        if (isElorReSub == 0) {
-            if (vip == 0 || vip == 3) {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_30_ipl-16801752901053.jpg?v=1680175290';
-            } else {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_50_ipl-16801752909159.jpg?v=1680175291';
-            }
-        } else {
-            if (vip == 0) {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip030-16832679604535.jpg?v=1683267961';
-            } else if (vip == 4 || vip == 5 || vip == 6) {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip50100-16832679613232.jpg?v=1683267962';
-            } else if (vip == 1 || vip == 2) {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip1RppResub-16849341848797.jpg?v=1684934185';
-            } else if (vip == 3) {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_may_23/zenrik_images/vip23RppResub-16849341841369.jpg?v=1684934184';
-            } else {
-                return 'https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/rpp_30_ipl-16801752901053.jpg?v=1680175290';
-            }
-        }
-    }
-
-    const GW_POPUP_DATA = [
-        {
-            id: 0,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story-01.gif?v=1666857803",
-        },
-        {
-            id: 1,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story2.png?v=1666856829",
-        },
-        {
-            id: 2,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/s3-(1).gif?v=1666858377",
-        },
-        {
-            id: 3,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story-04.gif?v=1666857934",
-        },
-        {
-            id: 4,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story5.png?v=1666856830",
-        },
-        {
-            id: 5,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story6-updated.png?v=1666856831",
-        },
-        {
-            id: 6,
-            img: "https://rummy-static-content.jungleerummy.com/Content/versioned/2.0.0.1/images/version4/promotion_october_22/zenrik_images/Story-07.gif?v=1666857933",
-        },
-    ];
-
-    function blockbuster() {
-        let newItem = document.createElement("div");
-        newItem.classList.add("item");
-
+    async function tppPassBannerOnly() {
         if (localStorage.getItem("userId") !== null) {
+            if (isUserBelongToRestrictedState()) return;
+            
             let userID_G = localStorage.getItem("userId");
+            let newItem = document.createElement("div");
+            newItem.classList.add("item");
 
-            let local2 = JSON.parse(localStorage.getItem("userData"));
-            let vip_category1 = local2.smUserInfo.vip;
-            let headerSlider = document.getElementById("header_slider");
-            if (vip_category1 == 1) {
+            let UserInfo = JSON.parse(localStorage.getItem("userData"));
+            let userVIPvalue = UserInfo.smUserInfo.vip;
+
+            let tppApiResponse;
+            tppApiResponse = await tppApiCall(userID_G, userVIPvalue);
+
+            let redirectionUrl = '/subscription/tournamentpropass';
+            if (tppApiResponse.subscription == "SUBSCRIBED") {
                 newItem.innerHTML = `
-      <a href="javascript:void(0)"
-        onclick="GAtrack3('', '/promotions/blockbuster-bonus-1')"><img
-          src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/vip1-16786998425110.jpg?v=1678699843" alt=""></a>`;
-                headerSlider.appendChild(newItem);
-            } else if (vip_category1 == 2) {
+              <div>
+              <a href="javascript:void(0)"
+              onclick="GAtrack3('TPP_PromoBanner_Rebuy_Clicked_Subscriber', '${redirectionUrl}')"><img
+              src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/360X142-16917553587892.jpg?v=1691755359"
+              style="width: 100%" alt=""></a> </div><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
+            } else if (tppApiResponse.subscription == "ELIGIBLE") {
                 newItem.innerHTML = `
-      <a href="javascript:void(0)"
-        onclick="GAtrack3('', '/promotions/blockbuster-bonus-1')"><img
-          src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/vip2-16786998418336.jpg?v=1678699842" alt=""></a>`;
-                headerSlider.appendChild(newItem);
-            } else if (vip_category1 == 3 || vip_category1 == 4) {
-                newItem.innerHTML = `
-      <a href="javascript:void(0)"
-        onclick="GAtrack3('', '/promotions/blockbuster-bonus-1')"><img
-          src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/vip3-16786998411182.jpg?v=1678699841" alt=""></a>`;
-                headerSlider.appendChild(newItem);
-            } else if (
-                vip_category1 == 5 ||
-                vip_category1 == 6 ||
-                vip_category1 == 0
-            ) {
-                newItem.innerHTML = `
-      <a href="javascript:void(0)"
-        onclick="GAtrack3('', '/promotions/blockbuster-bonus-1')"><img
-          src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_march_23/zenrik_images/vip5-16786998403302.jpg?v=1678699840" alt=""></a>`;
-                headerSlider.appendChild(newItem);
+              <div>
+              <a href="javascript:void(0)"
+              onclick="GAtrack3('TPP_PromoBanner_Rebuy_Clicked_NonSubscriber', '${redirectionUrl}')"><img
+              src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/360X142-(2)-16917555700452.jpg?v=1691755570"
+              style="width: 100%" alt=""></a> </div><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
             }
+            setTimeout(() => {
+                let headerSlider = document.getElementById("header_slider");
+                headerSlider.appendChild(newItem);
+            }, 200);
         }
-        initiateCarousel();
     }
-
-    document.onreadystatechange = () => {
-        if (document.readyState === "complete") {
-            withdrawlDeduction();
-            vipwiseprize();
-            bigbonusbashbanners();
-            checkUserCodeStatus();
-            tigerCheetahRummyLegends();
-            highroller();
-            rummyProPassIPL();
-            TdsStrip();
-            tppPassBannerAndStrip();
-            tppPassBannerOnly();
-            RummyRushBannerAndStrip();
-            if (localStorage.getItem("userId") == null) {
-                document.querySelector(".para_content_userIdeven").style.display =
-                    "block";
-            } else {
-                if (localStorage.getItem("userId") % 2 == 0) {
-                    document.querySelector(".para_content_userIdeven").style.display =
-                        "block";
-                } else {
-                    document.querySelector(".para_content_userIdodd").style.display =
-                        "block";
-                }
-            }
-        }
-    };
 
     function isRummyRushActive() {
         let subscriptionStartDateInStr = "2023-08-21 20:30:00";
@@ -5512,13 +5327,16 @@ promotions to help you win big cash price." %}
         });
         let today = new Date(todayInStr);
 
-        if (today >= subscriptionStartDate && today < subscriptionEndDate) {
-            return true;
-        } else {
-            return false;
-        }
+        return (today >= subscriptionStartDate && today < subscriptionEndDate)
     }
-
+    function rummyRushApiCall(vbpUserId, vbpUserVip) {
+        let url = `https://app.jungleerummy.com/elara/v2/rr/is-el-sub?userID=${vbpUserId}&vip=${vbpUserVip}`;
+        return fetch(url, {
+            method: "GET",
+        })
+            .then((res) => res.json())
+            .then((res) => res);
+    }
     async function RummyRushBannerAndStrip() {
 
         if (localStorage.getItem("userId") !== null) {
@@ -5541,8 +5359,10 @@ promotions to help you win big cash price." %}
                 data: null,
                 insertedTime: null,
             };
-            if (localStorage.getItem("rummyRushEligibleStatusData") != null) {
-                rummyRushStoredData = JSON.parse(localStorage.getItem("rummyRushEligibleStatusData"));
+
+            let rummyRushEligibleStatusData = localStorage.getItem("rummyRushEligibleStatusData");
+            if (rummyRushEligibleStatusData != null) {
+                rummyRushStoredData = JSON.parse(rummyRushEligibleStatusData);
             }
             if (rummyRushStoredData.insertedTime == null || (rummyRushStoredData.insertedTime != null && curr - rummyRushStoredData.insertedTime >= 18000000)) {
                 rummyRushApiResponse = await rummyRushApiCall(userID_G, userVIPvalue);
@@ -5567,144 +5387,45 @@ promotions to help you win big cash price." %}
                 let headerSlider = document.getElementById("header_slider");
                 headerSlider.insertBefore(newItem, headerSlider.children[0]);
                 
-                document.getElementById("stripBelowSliderElem").style.display = "block";
-                document.getElementById('stripBelowSliderElem').innerHTML = `<a href="javascript:void(0)"
-      onclick="GAtrack3('RR_Promotions_Strip_Clicked', '/subscription2')"
-      >
-      <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/RR2-PromoPageStrip-16927079087722.png?v=1692707909" style="width: 100%; height: auto;"/>
-   </a>`;
-                setTimeout(() => initiateCarousel(), 200);
-            } else {
-                initiateCarousel();
+                let stripBelowSliderElem = document.getElementById("stripBelowSliderElem");
+                stripBelowSliderElem.style.display = "block";
+                stripBelowSliderElem.innerHTML = `<a href="javascript:void(0)"
+        onclick="GAtrack3('RR_Promotions_Strip_Clicked', '/subscription2')"
+        >
+        <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/RR2-PromoPageStrip-16927079087722.png?v=1692707909" style="width: 100%; height: auto;"/>
+        </a>`;
             }
-        } else {
+        }
+    }
+
+    document.onreadystatechange = () => {
+        if (document.readyState === "complete") {
+            withdrawlDeduction();
+            vipwiseprize();
+            bigbonusbashbanners();
+            checkUserCodeStatus();
+            tigerCheetahRummyLegends();
+            highroller();
+            rummyProPassIPL();
+            TdsStrip();
+            tppPassBannerAndStrip();
+            tppPassBannerOnly();
+            RummyRushBannerAndStrip();
+            if (localStorage.getItem("userId") % 2 == 0) {
+                document.querySelector(".para_content_userIdeven").style.display =
+                    "block";
+            } else {
+                document.querySelector(".para_content_userIdodd").style.display =
+                    "block";
+            }
             initiateCarousel();
         }
-    }
-
-    function rummyRushApiCall(vbpUserId, vbpUserVip) {
-        let url = `https://app.jungleerummy.com/elara/v2/rr/is-el-sub?userID=${vbpUserId}&vip=${vbpUserVip}`;
-        return fetch(url, {
-            method: "GET",
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                return res;
-            });
-    }
-
-    function getTPPStripNbnr(status) {
-        if (status == 'SUBSCRIBED') {
-            return {
-                bnr: "https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/TPP_S_Promo-16884645389803.jpg?v=1688464539",
-                stripHtml: `<a href="javascript:void(0)"
-                            onclick="GAtrack3('VBP_Strip_Clicked', '/subscription/tournamentpropass')"
-                            >
-                            <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/tppsrtrip-16884645518065.png?v=1688464552" style="width: 100%; height: auto;"/>
-                         </a>`
-            }
-        } else {
-            return {
-                bnr: "https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/TPP_NS_Promo-16884645397599.jpg?v=1688464540",
-                stripHtml: `<a href="javascript:void(0)"
-                            onclick="GAtrack3('VBP_Strip_Clicked', '/subscription/tournamentpropass')"
-                            >
-                            <img src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_july_23/zenrik_images/tppsrtrip-16884645518065.png?v=1688464552" style="width: 100%; height: auto;"/>
-                         </a>`
-            }
-        }
-    }
-
-    function TdsStrip() {
-        let url = "https://stack.jungleegames.com/vault/tds-promotion-strip";
-        fetch(url, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userid: localStorage.getItem("userId") }),
-        }).then(res => res.json()).then((res) => {
-            if (res?.data == true) {
-                document.getElementById("stripBelowSliderElem").style.display = "block";
-                document.getElementById('stripBelowSliderElem').innerHTML = `<img onclick="GAtrack3('NewUserTDS_PromoStripClicked', '/deductioncashback')" style="width:100%;margin-bottom: 5px;" src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/TDSNew_Strip-16911423515149.png?v=1691142352" />`;
-            }
-        })
-    }
-
-    // popup functions 
-    function closePopupTgwp() {
-        // Pause the video
-        var iframe_tgwp = document.querySelector('.youtube_tgwp');
-        iframe_tgwp.src = '';
-
-        // Close the popup
-        var popupTgwp1 = document.getElementById("popup");
-        popupTgwp1.classList.add("hidden-class-tgwp");
-
-        setTimeout(() => {
-            iframe_tgwp.src = 'https://www.youtube.com/embed/3-T_VoqHydo';
-        }, 200);
-    }
-
-    window.onload = function () {
-        var popup = document.getElementById("popup");
-        popup.style.display = "flex";
     };
 
-    async function tppPassBannerOnly() {
-        if (localStorage.getItem("userId") !== null) {
-            if (isUserBelongToRestrictedState()) {
-                return;
-            }
-            let userID_G = localStorage.getItem("userId");
-            let newItem = document.createElement("div");
-            newItem.classList.add("item");
-
-            let UserInfo = JSON.parse(localStorage.getItem("userData"));
-            let userVIPvalue = UserInfo.smUserInfo.vip;
-
-            let tppApiResponse;
-            tppApiResponse = await tppApiCall(userID_G, userVIPvalue);
-
-            let redirectionUrl = '/subscription/tournamentpropass';
-            if (tppApiResponse.subscription == "SUBSCRIBED") {
-                newItem.innerHTML = `
-              <div>
-              <a href="javascript:void(0)"
-              onclick="GAtrack3('TPP_PromoBanner_Rebuy_Clicked_Subscriber', '${redirectionUrl}')"><img
-              src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/360X142-16917553587892.jpg?v=1691755359"
-              style="width: 100%" alt=""></a> </div><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
-                setTimeout(() => {
-                    let headerSlider = document.getElementById("header_slider");
-                    headerSlider.appendChild(newItem);
-                    initiateCarousel();
-                }, 200);
-
-            } else if (tppApiResponse.subscription == "ELIGIBLE") {
-                newItem.innerHTML = `
-              <div>
-              <a href="javascript:void(0)"
-              onclick="GAtrack3('TPP_PromoBanner_Rebuy_Clicked_NonSubscriber', '${redirectionUrl}')"><img
-              src="https://d22ueo28hfk252.cloudfront.net/Content/versioned/2.0.0.1/images/version4/promotion_august_23/zenrik_images/360X142-(2)-16917555700452.jpg?v=1691755570"
-              style="width: 100%" alt=""></a> </div><div class="ascii-strip">This game may be habit-forming or financially risky. Play responsibly.</div> `;
-                setTimeout(() => {
-                    let headerSlider = document.getElementById("header_slider");
-                    headerSlider.appendChild(newItem);
-                    initiateCarousel();
-                }, 200);
-            }
-        } else {
-            initiateCarousel();
-        }
-    }
-
-    function isPwa() {
-        if (sessionStorage.getItem('launchFrom') == 'PWA' || window.matchMedia('(display-mode: standalone)').matches) {
-            return true;
-        } 
-        return ((window.matchMedia('(display-mode: browser)').matches == false) && (navigator.userAgent.indexOf("crosswalk") == -1))
-    }
+    window.onload = () => {
+        let popup = document.getElementById("popup");
+        popup.style.display = "flex";
+    };
 
 </script>
 <!-- modal story js -->
